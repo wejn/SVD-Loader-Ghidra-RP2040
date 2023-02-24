@@ -1,4 +1,6 @@
+## ###
 # -*- coding: utf-8 -*-
+##
 # Load specified SVD and generate peripheral memory maps & structures, with RP2040 tweaks.
 #@author Thomas Roth <thomas.roth@leveldown.de>, Ryan Pavlik <ryan.pavlik@gmail.com>, Michal Jirků <box@wejn.org>
 #@keybinding 
