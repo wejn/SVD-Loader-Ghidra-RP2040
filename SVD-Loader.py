@@ -92,7 +92,8 @@ cpu_type = parser.get_device().cpu.name
 # little/big
 cpu_endian = parser.get_device().cpu.endian
 
-default_register_size = parser.get_device().size
+# RP2040 has "width", not "size", and da0c2a18 commit promised 32bit default anyway
+default_register_size = parser.get_device().size or parser.get_device().width or 32
 
 # Not all SVDs contain these fields
 if cpu_type and not cpu_type.startswith("CM"):
