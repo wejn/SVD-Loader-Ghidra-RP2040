@@ -219,8 +219,8 @@ for peripheral in peripherals:
 		symtbl.createLabel(addr, name, namespace, SourceType.USER_DEFINED)
 		try:
 			listing.createData(addr, peripheral_struct, False)
-		except:
-			print("\t\tFailed to generate peripheral " + peripheral.name)
+		except Exception as e:
+			print("\t\tFailed to generate peripheral " + peripheral.name + ", " + str(e))
 
 	gen_struct(peripheral.name, peripheral, peripheral.base_address, length)
 
