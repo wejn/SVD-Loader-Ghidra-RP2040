@@ -214,11 +214,13 @@ for peripheral in peripherals:
 			peripheral_struct.replaceAtOffset(register.address_offset, r_type, register_size/8, register.name, register.description)
 
 
-		addr = space.getAddress(peripheral_start)
-		dtm.addDataType(peripheral_struct, DataTypeConflictHandler.REPLACE_HANDLER)
-		symtbl.createLabel(addr, name, namespace, SourceType.USER_DEFINED)
 		try:
+			addr = space.getAddress(peripheral_start)
+			dtm.addDataType(peripheral_struct, DataTypeConflictHandler.REPLACE_HANDLER)
+			symtbl.createLabel(addr, name, namespace, SourceType.USER_DEFINED)
 			listing.createData(addr, peripheral_struct, False)
+		except ghidra.program.model.util.CodeUnitInsertionException as e:
+			print("\t\tFailed to generate peripheral (ins) " + peripheral.name + ", " + str(e))
 		except Exception as e:
 			print("\t\tFailed to generate peripheral " + peripheral.name + ", " + str(e))
 
