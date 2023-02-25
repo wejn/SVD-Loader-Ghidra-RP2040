@@ -192,7 +192,7 @@ for peripheral in peripherals:
 
 	def gen_struct(name, peripheral, start, length):
 		# Generate structure for the peripheral
-		peripheral_struct = StructureDataType(name, length)
+		peripheral_struct = StructureDataType(peripheral.name, length)
 
 		peripheral_start = start
 		peripheral_end = peripheral_start + length
