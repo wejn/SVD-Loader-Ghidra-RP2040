@@ -15,6 +15,13 @@ addition to the memory ranges, see 2.1.2. (Atomic Register Access) on the
 [RP2040 datasheet](https://datasheets.raspberrypi.com/rp2040/rp2040-datasheet.pdf)
 for details.
 
+As well as other useful tweaks:
+
+- Peripheral generation should be idempotent (you can re-run the script to add what's missing)
+- Data structures for derived peripherals are re-used
+- Data structures for derived RP2040 peripherals are aliased (UART instead of UART0)
+- Pointers to structures are auto-added as a type, too
+
 <!-- More on that in [my blog post](https://wejn.org/FIXME). -->
 
 ## Installation
