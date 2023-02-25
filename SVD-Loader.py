@@ -15,7 +15,7 @@
 import sys
 
 from cmsis_svd.parser import SVDParser
-from ghidra.program.model.data import Structure, StructureDataType, UnsignedIntegerDataType, DataTypeConflictHandler
+from ghidra.program.model.data import Structure, StructureDataType, PointerDataType, UnsignedIntegerDataType, DataTypeConflictHandler
 from ghidra.program.model.data import UnsignedShortDataType, ByteDataType, UnsignedLongLongDataType
 from ghidra.program.model.mem import MemoryBlockType
 from ghidra.program.model.address import AddressFactory
@@ -217,7 +217,8 @@ for peripheral in peripherals:
 
 		try:
 			addr = space.getAddress(peripheral_start)
-			dtm.addDataType(peripheral_struct, DataTypeConflictHandler.REPLACE_HANDLER)
+			dt = dtm.addDataType(peripheral_struct, DataTypeConflictHandler.REPLACE_HANDLER)
+			dtm.addDataType(PointerDataType(dt), DataTypeConflictHandler.REPLACE_HANDLER)
 			symtbl.createLabel(addr, name, namespace, SourceType.USER_DEFINED)
 			listing.createData(addr, peripheral_struct, False)
 		except ghidra.program.model.util.CodeUnitInsertionException as e:
