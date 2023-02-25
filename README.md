@@ -22,17 +22,15 @@ As well as other useful tweaks:
 - Data structures for derived RP2040 peripherals are aliased (UART instead of UART0)
 - Pointers to structures are auto-added as a type, too
 
-So you get correct references:
+So you get correct references
+(instead of [this](https://wejn.org/assets/2023-rp2040-ghidra/pre-refs.png)):
 
 ![correct references](https://wejn.org/assets/2023-rp2040-ghidra/post-refs.png)
 
-(instead of [this](https://wejn.org/assets/2023-rp2040-ghidra/pre-refs.png))
-
-and working decompile:
+and working decompile
+(instead of [this](https://wejn.org/assets/2023-rp2040-ghidra/pre-decompile.png)):
 
 ![working decompile](https://wejn.org/assets/2023-rp2040-ghidra/post-decompile.png)
-
-(instead of [this](https://wejn.org/assets/2023-rp2040-ghidra/pre-decompile.png)).
 
 A bit more on that in [my blog post](https://wejn.org/2023/02/making-ghidra-svd-loader-play-nice-with-rp2040/).
 
