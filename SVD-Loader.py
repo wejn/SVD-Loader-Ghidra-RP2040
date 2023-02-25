@@ -3,6 +3,7 @@
 ##
 # Load specified SVD and generate peripheral memory maps & structures, with RP2040 tweaks.
 #@author Thomas Roth <thomas.roth@leveldown.de>, Ryan Pavlik <ryan.pavlik@gmail.com>, Michal Jirků <box@wejn.org>
+#@category Data
 #@keybinding 
 #@menupath 
 #@toolbar
