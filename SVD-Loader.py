@@ -112,6 +112,7 @@ if cpu_endian and cpu_endian != "little":
 address_extras = {}
 address_extras_comments = {}
 address_extras_cond = lambda addr: False
+peripheral_name_aliases = {}
 # rp2040 tweaks, see section 2.1.2 (Atomic Register Access) in RP2040 Datasheet
 # https://datasheets.raspberrypi.com/rp2040/rp2040-datasheet.pdf
 if parser.get_device().name == "RP2040":
@@ -122,6 +123,13 @@ if parser.get_device().name == "RP2040":
 		'xor': 'Note: atomic xor on write',
 		'set': 'Note: atomic bitmask set on write',
 		'clr': 'Note: atomic bitmask clear on write',
+	}
+	peripheral_name_aliases = {
+		'PLL_SYS': 'PLL',
+		'UART0': 'UART',
+		'SPI0': 'SPI',
+		'I2C0': 'I2C',
+		'PIO0': 'PIO',
 	}
 
 # Get things we need
@@ -178,6 +186,7 @@ for r in memory_regions:
 print("\tDone!")
 
 print("Generating peripherals...")
+peripherals_cache = {}
 for peripheral in peripherals:
 	print("\t" + peripheral.name)
 
@@ -192,28 +201,39 @@ for peripheral in peripherals:
 	length = calculate_peripheral_size(peripheral, default_register_size)
 
 	def gen_struct(name, peripheral, start, length):
-		# Generate structure for the peripheral
-		peripheral_struct = StructureDataType(peripheral.name, length)
-
 		peripheral_start = start
 		peripheral_end = peripheral_start + length
-		print("\t\t{}:{}".format(hex(peripheral_start), hex(peripheral_end)))
 
-		for register in peripheral.registers:
-			register_size = default_register_size if not register._size else register._size
+		df = peripheral.get_derived_from()
+		if df and df.name in peripherals_cache:
+			# Re-use structure for the peripheral
+			peripheral_struct = peripherals_cache[df.name]
+			print("\t\t{}:{} [{}] (reusing {})".format(hex(peripheral_start), hex(peripheral_end), str(name), str(df.name)))
+		else:
+			# Generate structure for the peripheral
+			peripheral_struct = StructureDataType(peripheral_name_aliases.get(peripheral.name, peripheral.name), length)
 
-			r_type = UnsignedIntegerDataType()
-			rs = register_size / 8
-			if rs == 1:
-				r_type = ByteDataType()
-			elif rs == 2:
-				r_type = UnsignedShortDataType()
-			elif rs == 8:
-				r_type = UnsignedLongLongDataType()
+			print("\t\t{}:{} [{}]".format(hex(peripheral_start), hex(peripheral_end), str(name)))
 
-			print("\t\t\t{}({}:{})".format(register.name, hex(register.address_offset), hex(register.address_offset + register_size/8)))
-			peripheral_struct.replaceAtOffset(register.address_offset, r_type, register_size/8, register.name, register.description)
+			if peripheral.get_derived_from():
+				print(peripheral.name + " is DF: " + str(peripheral.get_derived_from().name))
 
+			for register in peripheral.registers:
+				register_size = default_register_size if not register._size else register._size
+
+				r_type = UnsignedIntegerDataType()
+				rs = register_size / 8
+				if rs == 1:
+					r_type = ByteDataType()
+				elif rs == 2:
+					r_type = UnsignedShortDataType()
+				elif rs == 8:
+					r_type = UnsignedLongLongDataType()
+
+				#print("\t\t\t{}({}:{})".format(register.name, hex(register.address_offset), hex(register.address_offset + register_size/8)))
+				peripheral_struct.replaceAtOffset(register.address_offset, r_type, register_size/8, register.name, register.description)
+
+		peripherals_cache[peripheral.name] = peripheral_struct
 
 		try:
 			addr = space.getAddress(peripheral_start)
