@@ -3,12 +3,14 @@
 ## Provenance
 
 This SVD-Loader originally comes from [leveldown-security](https://github.com/leveldown-security/SVD-Loader-Ghidra),
-but was adjusted by [rpavlik](https://github.com/rpavlik/SVD-Loader-Ghidra).
+and was adjusted by [rpavlik](https://github.com/rpavlik/SVD-Loader-Ghidra).
 Unfortunately that pull request is still hanging open as of 2023-02-24.
 
 ## Intro
 
-For basic info [read leveldown's blog post](https://leveldown.de/blog/svd-loader/).
+For basic info [read leveldown's blog post](https://leveldown.de/blog/svd-loader/);
+for specifics about this fork read
+[my blog post](https://wejn.org/2023/02/making-ghidra-svd-loader-play-nice-with-rp2040/).
 
 This version contains adjustments targeted at RP2040, which has rather unique
 addition to the memory ranges, see 2.1.2. (Atomic Register Access) on the
@@ -31,8 +33,6 @@ and working decompile
 (instead of [this](https://wejn.org/assets/2023-rp2040-ghidra/pre-decompile.png)):
 
 ![working decompile](https://wejn.org/assets/2023-rp2040-ghidra/post-decompile.png)
-
-A bit more on that in [my blog post](https://wejn.org/2023/02/making-ghidra-svd-loader-play-nice-with-rp2040/).
 
 ## Installation
 
