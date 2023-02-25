@@ -9,7 +9,7 @@
 #@toolbar
 
 # More information:
-# https://github.com/wejn/SVD-Loader-Ghidra-RP2040/
+# https://wejn.org/2023/02/making-ghidra-svd-loader-play-nice-with-rp2040/
 # License: GPLv3
 
 import sys
